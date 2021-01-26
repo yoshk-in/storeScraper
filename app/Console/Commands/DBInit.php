@@ -47,11 +47,11 @@ class DBInit extends Command
         $schemaName = $this->argument('name') ??
             $this->askInput('database name', config('database.connections.mysql.database'));
 
-        putenv('DB_DATABASE=' . $schemaName);
+        $this->setEnvironmentValue('DB_DATABASE', $schemaName);
 
-        $charset = config("database.connections.mysql.charset",'utf8mb4');
+        $charset = config("database.connections.mysql.charset", 'utf8mb4');
 
-        $collation = config("database.connections.mysql.collation",'utf8mb4_unicode_ci');
+        $collation = config("database.connections.mysql.collation", 'utf8mb4_unicode_ci');
 
         config(["database.connections.mysql.database" => null]);
 
@@ -69,8 +69,8 @@ class DBInit extends Command
     {
         $userName = $this->askInput('db user name');
         $password = $this->secret('input db user password');
-        putenv('DB_USERNAME='. $userName);
-        putenv('DB_PASSWORD='. $password);
+        $this->setEnvironmentValue('DB_USERNAME', $userName);
+        $this->setEnvironmentValue('DB_PASSWORD', $password);
         config(["database.connections.mysql.username" => $userName]);
         config(["database.connections.mysql.password" => $password]);
     }
@@ -78,5 +78,19 @@ class DBInit extends Command
     private function askInput($msg, $default = null): string
     {
         return $this->ask('input ' . $msg . ' or press "enter to take value from config file', $default);
+    }
+
+    public function setEnvironmentValue($envKey, $envValue)
+    {
+        $envFile = app()->environmentFilePath();
+        $str = file_get_contents($envFile);
+
+        $oldValue = env($envKey);
+
+        $str = str_replace("{$envKey}={$oldValue}", "{$envKey}={$envValue}\n", $str);
+
+        $fp = fopen($envFile, 'w');
+        fwrite($fp, $str);
+        fclose($fp);
     }
 }
