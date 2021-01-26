@@ -40,8 +40,10 @@ class DBInit extends Command
     public function handle()
     {
         $this->info('next prompts set up mysql database configuration;
-        if you use another db type you shoud remove "@php artisan db:init" cmd from post-create scripts in "composer.json" or deploy project manualy');
+    if you use another db type you shoud remove "@php artisan db:init" cmd from post-create scripts in "composer.json" or deploy project manualy');
 
+        $this->credentials();
+        
         $schemaName = $this->argument('name') ??
             $this->askInput('database name', config('database.connections.mysql.database'));
 
@@ -54,8 +56,7 @@ class DBInit extends Command
         $query = "CREATE DATABASE IF NOT EXISTS $schemaName CHARACTER SET $charset COLLATE $collation;";
 
         $success = (int) DB::statement($query);
-
-        if ($success !== 0) $this->credentials();
+        
         
         config(["database.connections.mysql.database" => $schemaName]);
 
