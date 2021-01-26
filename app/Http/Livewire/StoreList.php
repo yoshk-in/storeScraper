@@ -19,8 +19,6 @@ class StoreList extends Component
     public $stores;
     public $header = [];
     public $image = [];
-    // protected ScrapeInDB $scraper;
-    public $scraping = false;
 
     protected $rules = [
         'header.*' => 'required',
@@ -46,10 +44,9 @@ class StoreList extends Component
 
     public function doScrape()
     {
-        $this->scraping = true;
         $scraper = new ScrapeInDB;
         $scraper->getData();
-        $this->scraping = false;
+        if (blank($this->stores)) $this->mount();
     }
 
     public function render()
