@@ -47,6 +47,8 @@ class DBInit extends Command
         $schemaName = $this->argument('name') ??
             $this->askInput('database name', config('database.connections.mysql.database'));
 
+        putenv('DB_DATABASE=' . $schemaName);
+
         $charset = config("database.connections.mysql.charset",'utf8mb4');
 
         $collation = config("database.connections.mysql.collation",'utf8mb4_unicode_ci');
@@ -67,6 +69,8 @@ class DBInit extends Command
     {
         $userName = $this->askInput('db user name');
         $password = $this->secret('input db user password');
+        putenv('DB_USERNAME='. $userName);
+        putenv('DB_PASSWORD='. $password);
         config(["database.connections.mysql.username" => $userName]);
         config(["database.connections.mysql.password" => $password]);
     }
