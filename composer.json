@@ -60,6 +60,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi",
             "@php artisan db:init",
+            "@php artisan deploy",
             "npm install"
         ]
     }

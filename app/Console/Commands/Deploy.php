@@ -42,7 +42,7 @@ class Deploy extends Command
         Artisan::call('config:cache');
         Artisan::call('route:cache');
         Artisan::call('view:cache');
-        $this->info('please set up APP_DEBUG to FALSE in ".env" file to optimize application workflow');
+        $this->info('please set up ".env" file to optimize application workflow');
         return 0;
     }
 }
