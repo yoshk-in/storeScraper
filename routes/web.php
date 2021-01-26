@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view([MainController::class, 'storeCoupons']);
-});
+Route::get('/', [MainController::class, 'storeCoupons']);
 
 Route::get('/scrape', [MainController::class, 'scrape']);
 
