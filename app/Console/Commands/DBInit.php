@@ -60,7 +60,7 @@ class DBInit extends Command
         
         config(["database.connections.mysql.database" => $schemaName]);
 
-        return $success;
+        return $success ? 0 : 1;
     }
 
     private function credentials()
